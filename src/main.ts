@@ -10,6 +10,7 @@ async function bootstrap() {
   // Swagger documentation generator configuration.
   // TODO: move this out to a config file.
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Catflix API')
     .setDescription('Catflix™ is the leading streamer of cat videos around the globe.')
     .setVersion('1.1')
@@ -18,6 +19,7 @@ async function bootstrap() {
   // Set the swagger module up, and add the endpoints.
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
 
   // Start listening for the requests.
   // TODO: move port number to a config file.
