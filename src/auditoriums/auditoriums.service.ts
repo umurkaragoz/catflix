@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuditoriumDto } from './dto/create-auditorium.dto';
 import { UpdateAuditoriumDto } from './dto/update-auditorium.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -29,7 +29,11 @@ export class AuditoriumsService {
 
   /* --------------------------------------------------------------------------------------------------------------------------------- find One -+- */
   async findOne(id: number) {
-    return await this.auditoriumRepo.findOne(id);
+    const auditorium = await this.auditoriumRepo.findOne(id);
+
+    if (!auditorium) throw new NotFoundException(`Auditorium with ID '${id}' could not be found.`);
+
+    return auditorium;
   }
 
   /* ----------------------------------------------------------------------------------------------------------------------------------- update -+- */

@@ -27,10 +27,7 @@ export class AppController {
     description: 'Exchange user email-password information for an API token.<br><br>After a successful login, copy the `token` value from the response object, and use it to authenticate all other endpoints.',
   })
   async login(@Req() req) {
-    console.log('AppController.login()');
     const user = await this.authService.login(req.user);
-
-    console.log(user);
 
     return user;
   }

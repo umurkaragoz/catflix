@@ -16,8 +16,6 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
 
   /* --------------------------------------------------------------------------------------------------------------------------------- validate -+- */
   async validate(token: string): Promise<any> {
-    console.log('BearerStrategy.validate()');
-    console.log(token);
     const user = await this.authService.validateBearer(token);
 
     if (!user) throw new UnauthorizedException();

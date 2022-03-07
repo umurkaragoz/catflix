@@ -1,73 +1,131 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Catflix - A nestJS Sample Project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a sample project for learning the basics of nestJS framework. 
 
-## Installation
+
+## Getting Started
+
+### Requirements
+
+- Node.js >= v16
+- A recent version of MariaDB or Mysql (tested with 10.4.21-MariaDB).
+
+
+### Installation
+
+- Clone the repository.
+- Run `npm install` to install the dependencies.
+
+
+### Configuration
+
+- Set up the database connection settings in `.env` file.
+- Create an empty database.
+- Run `npm run typeorm schema:sync` to migrate the database.
+
+
+### Running the app
 
 ```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
+# standard development mode
 $ npm run start
 
-# watch mode
-$ npm run start:dev
+# development mode with Webpack Hot Module Replacement
+$ npm run start:hmr
 
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+Navigate to [http://localhost:3000/api/](http://localhost:3000/api/) to interact with the swagger interface. 
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+## Usage
 
-# test coverage
-$ npm run test:cov
+The app consists of an API with a swagger interface.
+
+
+### Auth
+
+- Users are registered with an **email and password**.
+- There are two types of users;
+  - `customer` has only access to basic operations. These can be found in **Customer Operations** section in swagger interface.
+  - `manager` has CRUD access to *every resource*, as well as customer specific operations.
+- All endpoints require **bearer tokens** for authentication.
+- A bearer token is created or refreshed after each login.
+- You may get the bearer token from the response of `/login` endpoint. It is named `token`.
+- **Bearer token** authentication method was preferred over a **JWT** one, because nestJS documentation already shows every step to setup an JWT auth system. Therefore, it was not enough challenge, as I was trying to get my hands dirty with the framework.
+
+### Customer Operations
+
+- List all available movies;
+  - Use `/movies` interface.
+- List all available sessions;
+  - Use `/sessions` interface. 
+- Buy a ticket; 
+  - Use `/tickets/buy` interface
+  - Must specify a `sessionId`.
+  - Checks age restriction. (`<`)
+- Watch a movie;
+  - Use `/movies/watch` interface.
+  - Must specify the a `movieId`.
+  - Checks whether logged-in user has tickets for the movie.
+  - Tickets are single use, they are consumed after you watch a movie.
+- Watch history;
+  - Use `/tickets/history` interface.
+  - This returns data in `ticket.session.movie, ticket.session.auditorium` format.
+  - Use query parameter `watched="Watched"`.
+  - Alternatively, you may use this filter to see all of your tickets, or unused ones.
+
+## Technical
+
+### Notes - Quirks
+
+- Database columns named in *snake_case*, but attributes are *camelCase*.
+- Table names use *plural* format, instead of singular, which is nestJS default. 
+
+### Data Structure
+
+**Legend:**
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
++ table/entity
+- columns
+> relations/FKs
+```
+**Structure**
+```text
++ users
+    - id
+    - type              // Enum: 'customer'|'manager'
+    - email
+    - password
+    - firstName
+    - lastName
+    - age
+    - token             // Bearer token.
+    > tickets
++ movies
+    - id
+    - name
+    - description
+    - minAge            // Age restriction.
+    > sessions
++ auditoriums       // Movie rooms/halls.
+    - id
+    - name
+    > sessions
++ sessions          // Movie sessions.
+    - id
+    - timeSlot          // Fixed list of enum values.
+    - date
+    > movieId
+    > auditoriumId
++ tickets
+    - id
+    - isWatched         // Whether the ticket was consumed.
+    > sessionId
+    > userId
+```

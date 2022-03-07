@@ -15,7 +15,6 @@ export class AuthService {
 
   /* ---------------------------------------------------------------------------------------------------------------------------- validate User -+- */
   async validateBasic(email: string, password: string): Promise<any> {
-    console.log('AuthService.validateBasic()');
     const user = await this.usersService.findOneByEmail(email);
 
     if (!user) return null;
@@ -29,8 +28,6 @@ export class AuthService {
 
   /* ---------------------------------------------------------------------------------------------------------------------------- validate User -+- */
   async validateBearer(token: string): Promise<any> {
-    console.log('AuthService.validateBearer()');
-
     return await this.usersService.findOneByToken(token);
   }
 

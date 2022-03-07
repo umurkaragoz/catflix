@@ -1,24 +1,21 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { Movie } from '../../movies/entities/movie.entity';
-import { Auditorium } from '../../auditoriums/entities/auditorium.entity';
-import { Session, TimeSlot } from '../../sessions/entities/session.entity';
-import { User } from '../../users/entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTicketDto {
 
   @ApiProperty({
     required: true,
     default: 1,
-    description: 'Id of the session.',
+    description: 'ID of the session.',
   })
-  session: Session;
+  sessionId: number;
 
   @ApiProperty({
     required: true,
     default: 1,
-    description: 'Id of the user.',
+    description: 'ID of the user.',
   })
-  user: User;
+  userId: number;
+
 
   @ApiProperty({
     default: false,

@@ -18,10 +18,16 @@ export class Session {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'movie_id', nullable: true })
+  movieId: number;
+
   @ManyToOne(() => Movie, movie => movie.sessions)
   // TypeORM by default uses camelCase column names. Override column name in relation options to use snake_case.
   @JoinColumn({ name: 'movie_id' })
-  movie: Movie;
+  movie: Promise<Movie>;
+
+  @Column({ name: 'auditorium_id', nullable: true })
+  auditoriumId: number;
 
   @ManyToOne(() => Auditorium, auditorium => auditorium.sessions)
   // TypeORM by default uses camelCase column names. Override column name in relation options to use snake_case.

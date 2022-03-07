@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,12 +24,18 @@ export class SessionsService {
 
   /* --------------------------------------------------------------------------------------------------------------------------------- find All -+- */
   async findAll() {
-    return await this.sessionRepo.find();
+    return await this.sessionRepo.find({
+      relations: ['movie', 'auditorium'],
+    });
   }
 
   /* --------------------------------------------------------------------------------------------------------------------------------- find One -+- */
   async findOne(id: number) {
-    return await this.sessionRepo.findOne(id);
+    const session = await this.sessionRepo.findOne(id);
+
+    if (!session) throw new NotFoundException(`Session with ID '${id}' could not be found.`);
+
+    return session;
   }
 
   /* ----------------------------------------------------------------------------------------------------------------------------------- update -+- */

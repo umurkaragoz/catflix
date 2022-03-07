@@ -4,6 +4,7 @@ import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { BearerAuthGuard } from '../auth/guards/bearer-auth.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ManagerGuard } from '../auth/guards/manager.guard';
 
 @Controller('sessions')
 @UseGuards(BearerAuthGuard)
@@ -17,6 +18,7 @@ export class SessionsController {
 
   /* ----------------------------------------------------------------------------------------------------------------------------------- create -+- */
   @Post()
+  @UseGuards(ManagerGuard)
   @ApiOperation({
     summary: 'Create a new session.',
   })
@@ -29,6 +31,7 @@ export class SessionsController {
 
   /* --------------------------------------------------------------------------------------------------------------------------------- find All -+- */
   @Get()
+  @ApiTags('Customer Operations')
   @ApiOperation({
     summary: 'List all sessions.',
   })
@@ -38,6 +41,7 @@ export class SessionsController {
 
   /* --------------------------------------------------------------------------------------------------------------------------------- find One -+- */
   @Get(':id')
+  @UseGuards(ManagerGuard)
   @ApiOperation({
     summary: 'Retrieve a single session using its ID.',
   })
@@ -47,6 +51,7 @@ export class SessionsController {
 
   /* ----------------------------------------------------------------------------------------------------------------------------------- update -+- */
   @Patch(':id')
+  @UseGuards(ManagerGuard)
   @ApiOperation({
     summary: 'Update a session.',
   })
@@ -56,6 +61,7 @@ export class SessionsController {
 
   /* ----------------------------------------------------------------------------------------------------------------------------------- remove -+- */
   @Delete(':id')
+  @UseGuards(ManagerGuard)
   @ApiOperation({
     summary: 'Delete a session.',
   })

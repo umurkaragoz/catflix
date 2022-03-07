@@ -30,6 +30,6 @@ export class CreateMovieDto {
     type: [Session],
     default: [{ auditorium: 1, timeSlot: TimeSlot.TS16, date: '2022-03-14' }],
   })
-  sessions: Session[];
+  sessions: Promise<Session[]>;
 
 }

@@ -1,23 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TimeSlot } from '../entities/session.entity';
 import { Movie } from '../../movies/entities/movie.entity';
-import { Auditorium } from '../../auditoriums/entities/auditorium.entity';
 
 export class CreateSessionDto {
 
   @ApiProperty({
     required: true,
     default: 1,
-    description: 'Id of the movie.',
+    description: 'ID of the movie.',
   })
-  movie: Movie;
+  movieId: number;
 
   @ApiProperty({
     required: true,
     default: 1,
-    description: 'Name of the movie.',
+    description: 'ID of the auditorium.',
   })
-  auditorium: Auditorium;
+  auditoriumId: number;
 
   @ApiProperty({
     required: true,
@@ -29,8 +28,8 @@ export class CreateSessionDto {
 
   @ApiProperty({
     required: true,
-    default: '',
-    description: 'Name of the movie.',
+    default: '2022-02-17',
+    description: 'Date of the session. Format: Y-m-d.',
   })
   date: string;
 

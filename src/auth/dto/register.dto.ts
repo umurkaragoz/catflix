@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UserType } from '../../users/entities/user.entity';
 
 export class RegisterDto {
 
@@ -40,5 +41,13 @@ export class RegisterDto {
     description: 'password',
   })
   lastName: string;
+
+  @ApiProperty({
+    required: true,
+    enum: UserType,
+    default: UserType.CUSTOMER,
+    description: 'Type of the user.',
+  })
+  type: UserType;
 
 }

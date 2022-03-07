@@ -4,9 +4,10 @@ import { CreateAuditoriumDto } from './dto/create-auditorium.dto';
 import { UpdateAuditoriumDto } from './dto/update-auditorium.dto';
 import { BearerAuthGuard } from '../auth/guards/bearer-auth.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ManagerGuard } from '../auth/guards/manager.guard';
 
 @Controller('auditoriums')
-@UseGuards(BearerAuthGuard)
+@UseGuards(BearerAuthGuard, ManagerGuard)
 @ApiTags('Auditoriums')
 @ApiBearerAuth()
 /* ------------------------------------------------------------------------------------------------------------------------------------------------ */

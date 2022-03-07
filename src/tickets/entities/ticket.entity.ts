@@ -8,10 +8,16 @@ export class Ticket {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'session_id', nullable: true })
+  sessionId: number;
+
   @ManyToOne(() => Session, session => session.tickets)
   // TypeORM by default uses camelCase column names. Override column name in relation options to use snake_case.
   @JoinColumn({ name: 'session_id' })
   session: Session;
+
+  @Column({ name: 'user_id', nullable: true })
+  userId: number;
 
   @ManyToOne(() => User, user => user.tickets)
   // TypeORM by default uses camelCase column names. Override column name in relation options to use snake_case.

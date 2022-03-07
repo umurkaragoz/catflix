@@ -40,5 +40,5 @@ export class User {
   type: UserType;
 
   @OneToMany(() => Ticket, ticket => ticket.user)
-  tickets: Ticket[];
+  tickets: Promise<Ticket[]>;
 }

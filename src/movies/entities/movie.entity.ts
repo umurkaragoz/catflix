@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Session } from '../../sessions/entities/session.entity';
 
 @Entity('movies')
@@ -16,5 +16,6 @@ export class Movie {
   minAge: number;
 
   @OneToMany(() => Session, session => session.movie)
-  sessions: Session[];
+  @JoinColumn({ name: 'id', referencedColumnName: 'movie_id' })
+  sessions: Promise<Session[]>;
 }
